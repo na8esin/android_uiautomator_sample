@@ -1,5 +1,7 @@
 # Basic sample for UiAutomator
 
+https://github.com/android/testing-samples/tree/master/ui/uiautomator/BasicSample
+
 *If you are new to UiAutomator, try this sample first.*
 
 This project uses the Gradle build system. You don't need an IDE to build and execute it but Android Studio is recommended.
