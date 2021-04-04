@@ -39,6 +39,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
+
 /**
  * Basic sample for unbundled UiAutomator.
  */
@@ -57,6 +59,7 @@ public class ChangeTextBehaviorTest {
 
     @Before
     public void startMainActivityFromHomeScreen() {
+    
         // Initialize UiDevice instance
         mDevice = UiDevice.getInstance(getInstrumentation());
 
@@ -96,6 +99,9 @@ public class ChangeTextBehaviorTest {
         UiObject2 changedText = mDevice
                 .wait(Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "textToBeChanged")),
                         500 /* wait 500ms */);
+        File file = new File("/sdcard/Pictures/testChangeText_sameActivity.png");
+        boolean isTaken = mDevice.takeScreenshot(file);
+
         assertThat(changedText.getText(), is(equalTo(STRING_TO_BE_TYPED)));
     }
 
@@ -111,6 +117,9 @@ public class ChangeTextBehaviorTest {
         UiObject2 changedText = mDevice
                 .wait(Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "show_text_view")),
                         500 /* wait 500ms */);
+        File file = new File("/sdcard/Pictures/testChangeText_newActivity.png");
+        boolean isTaken = mDevice.takeScreenshot(file);
+
         assertThat(changedText.getText(), is(equalTo(STRING_TO_BE_TYPED)));
     }
 
