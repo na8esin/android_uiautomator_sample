@@ -24,10 +24,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.uiautomator.By
-import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.UiObject2
-import androidx.test.uiautomator.Until
+import androidx.test.uiautomator.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
 import org.hamcrest.CoreMatchers.`is` as Is
@@ -86,7 +83,22 @@ class GooglePlayTest {
         context.startActivity(intent)
 
         // Wait for the app to appear
-        mDevice.wait(Until.hasObject(By.pkg("com.android.vending").depth(0)), LAUNCH_TIMEOUT)
+        mDevice.wait(
+            Until.hasObject(
+                By.pkg("com.android.vending").depth(0)), LAUNCH_TIMEOUT)
+
+        val signInButton: UiObject = mDevice.findObject(
+            UiSelector().text("Sign in").className("android.widget.Button")
+        )
+        if (signInButton.exists() && signInButton.isEnabled) {
+            signInButton.click()
+        }
+        // Sign in画面が表示されるまで待つ
+        mDevice.wait(
+            Until.hasObject(
+                By.text("with your Google Account.")),
+            LAUNCH_TIMEOUT)
+
 
         val file = File("/sdcard/Pictures/testChangeText_sameActivity.png")
         mDevice.takeScreenshot(file)
