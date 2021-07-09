@@ -19,6 +19,7 @@ package com.example.android.testing.uiautomator.BasicSample
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
@@ -66,8 +67,6 @@ class GooglePlayTest {
         assertThat(launcherPackage, notNullValue())
         mDevice.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT)
 
-        // https://play.google.com/store
-
         // Launch the blueprint app
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = context.packageManager
@@ -86,21 +85,20 @@ class GooglePlayTest {
 
     @Test
     fun testChangeText_sameActivity() {
-        // Type text and then press the button.
-        mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "editTextUserInput")).text =
-            STRING_TO_BE_TYPED
-        mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "changeTextBt"))
-                .click()
 
-        // Verify the test is displayed in the Ui
-        val changedText: UiObject2 = mDevice
-                .wait(
-            Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "textToBeChanged")),
-                        500 /* wait 500ms */)
+        val intent = Intent(Intent.ACTION_VIEW).apply {
+            data = Uri.parse(
+                "https://play.google.com/store")
+            setPackage("com.android.vending")
+        }
+        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        context.startActivity(intent)
+
         val file = File("/sdcard/Pictures/testChangeText_sameActivity.png")
         mDevice.takeScreenshot(file)
 
-        assertThat(changedText.text, Is(equalTo(STRING_TO_BE_TYPED)))
+        assertThat("hello", equalTo("hello"))
     }
 
     /**
