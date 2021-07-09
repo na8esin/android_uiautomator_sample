@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 30
@@ -31,4 +32,9 @@ dependencies {
     // UiAutomator Testing
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:' + rootProject.uiAutomatorVersion;
     androidTestImplementation 'org.hamcrest:hamcrest-integration:1.3'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
