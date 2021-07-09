@@ -66,16 +66,6 @@ class GooglePlayTest {
         val launcherPackage = getLauncherPackageName()
         assertThat(launcherPackage, notNullValue())
         mDevice.wait(Until.hasObject(By.pkg(launcherPackage).depth(0)), LAUNCH_TIMEOUT)
-
-        // Launch the blueprint app
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        val intent = context.packageManager
-                .getLaunchIntentForPackage(BASIC_SAMPLE_PACKAGE)
-        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)    // Clear out any previous instances
-        context.startActivity(intent)
-
-        // Wait for the app to appear
-        mDevice.wait(Until.hasObject(By.pkg(BASIC_SAMPLE_PACKAGE).depth(0)), LAUNCH_TIMEOUT)
     }
 
     @Test
@@ -94,6 +84,9 @@ class GooglePlayTest {
         intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         val context = ApplicationProvider.getApplicationContext<Context>()
         context.startActivity(intent)
+
+        // Wait for the app to appear
+        mDevice.wait(Until.hasObject(By.pkg("com.android.vending").depth(0)), LAUNCH_TIMEOUT)
 
         val file = File("/sdcard/Pictures/testChangeText_sameActivity.png")
         mDevice.takeScreenshot(file)
