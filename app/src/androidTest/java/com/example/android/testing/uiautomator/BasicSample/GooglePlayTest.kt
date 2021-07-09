@@ -47,7 +47,7 @@ class GooglePlayTest {
         const val BASIC_SAMPLE_PACKAGE
         = "com.example.android.testing.uiautomator.BasicSample"
         const val LAUNCH_TIMEOUT:Long = 5000
-        const val STRING_TO_BE_TYPED = "UiAutomator";
+        const val STRING_TO_BE_TYPED = "UiAutomator"
     }
 
     private lateinit var mDevice: UiDevice
@@ -71,26 +71,26 @@ class GooglePlayTest {
         // Launch the blueprint app
         val context = ApplicationProvider.getApplicationContext<Context>()
         val intent = context.packageManager
-                .getLaunchIntentForPackage(BASIC_SAMPLE_PACKAGE);
-        intent?.addFlags(android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);    // Clear out any previous instances
-        context.startActivity(intent);
+                .getLaunchIntentForPackage(BASIC_SAMPLE_PACKAGE)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)    // Clear out any previous instances
+        context.startActivity(intent)
 
         // Wait for the app to appear
-        mDevice.wait(Until.hasObject(By.pkg(BASIC_SAMPLE_PACKAGE).depth(0)), LAUNCH_TIMEOUT);
+        mDevice.wait(Until.hasObject(By.pkg(BASIC_SAMPLE_PACKAGE).depth(0)), LAUNCH_TIMEOUT)
     }
 
     @Test
     fun checkPreconditions() {
-        assertThat(mDevice, notNullValue());
+        assertThat(mDevice, notNullValue())
     }
 
     @Test
     fun testChangeText_sameActivity() {
         // Type text and then press the button.
         mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "editTextUserInput")).text =
-            STRING_TO_BE_TYPED;
+            STRING_TO_BE_TYPED
         mDevice.findObject(By.res(BASIC_SAMPLE_PACKAGE, "changeTextBt"))
-                .click();
+                .click()
 
         // Verify the test is displayed in the Ui
         val changedText: UiObject2 = mDevice
@@ -98,7 +98,7 @@ class GooglePlayTest {
             Until.findObject(By.res(BASIC_SAMPLE_PACKAGE, "textToBeChanged")),
                         500 /* wait 500ms */)
         val file = File("/sdcard/Pictures/testChangeText_sameActivity.png")
-        val isTaken = mDevice.takeScreenshot(file)
+        mDevice.takeScreenshot(file)
 
         assertThat(changedText.text, Is(equalTo(STRING_TO_BE_TYPED)))
     }
