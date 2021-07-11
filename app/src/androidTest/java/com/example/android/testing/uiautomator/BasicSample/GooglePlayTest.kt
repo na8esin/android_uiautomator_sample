@@ -99,7 +99,14 @@ class GooglePlayTest {
                 By.text("with your Google Account.")),
             LAUNCH_TIMEOUT)
 
+        // Email入力欄
+        val emailOrPhone = mDevice.findObject(
+            UiSelector().className("android.widget.EditText")
+        )
 
+        emailOrPhone.text="email"
+
+        // screen shot
         val file = File("/sdcard/Pictures/testChangeText_sameActivity.png")
         mDevice.takeScreenshot(file)
 
