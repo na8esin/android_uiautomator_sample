@@ -73,7 +73,7 @@ class GooglePlayTest {
     }
 
     @Test
-    fun testChangeText_sameActivity() {
+    fun playStoreSignIn() {
 
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse(
@@ -110,10 +110,8 @@ class GooglePlayTest {
         emailOrPhone.text = email
 
         // screen shot
-        val file = File("/sdcard/Pictures/testChangeText_sameActivity.png")
+        val file = File("/sdcard/Pictures/playStoreSignIn.png")
         mDevice.takeScreenshot(file)
-
-
 
         assertThat("hello", equalTo("hello"))
     }
