@@ -34,6 +34,8 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
 
+import java.util.*
+import kotlin.io.relativeTo
 
 /**
  * Basic sample for unbundled UiAutomator.
@@ -101,14 +103,17 @@ class GooglePlayTest {
 
         // Email入力欄
         val emailOrPhone = mDevice.findObject(
-            UiSelector().className("android.widget.EditText")
+            UiSelector().className("android.widget.emailOrPhone")
         )
 
-        emailOrPhone.text="email"
+        // いい加減なアドレスだとreCAPTCHAのようなものが表示される
+        emailOrPhone.text = email
 
         // screen shot
         val file = File("/sdcard/Pictures/testChangeText_sameActivity.png")
         mDevice.takeScreenshot(file)
+
+
 
         assertThat("hello", equalTo("hello"))
     }
