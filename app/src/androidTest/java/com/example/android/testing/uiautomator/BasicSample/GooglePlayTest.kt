@@ -27,15 +27,11 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.*
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.notNullValue
-import org.hamcrest.CoreMatchers.`is` as Is
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.File
-
-import java.util.*
-import kotlin.io.relativeTo
 
 /**
  * Basic sample for unbundled UiAutomator.
@@ -47,7 +43,6 @@ class GooglePlayTest {
         const val BASIC_SAMPLE_PACKAGE
         = "com.example.android.testing.uiautomator.BasicSample"
         const val LAUNCH_TIMEOUT:Long = 5000
-        const val STRING_TO_BE_TYPED = "UiAutomator"
     }
 
     private lateinit var mDevice: UiDevice
@@ -89,12 +84,8 @@ class GooglePlayTest {
             Until.hasObject(
                 By.pkg("com.android.vending").depth(0)), LAUNCH_TIMEOUT)
 
-        val signInButton: UiObject = mDevice.findObject(
-            UiSelector().text("Sign in").className("android.widget.Button")
-        )
-        if (signInButton.exists() && signInButton.isEnabled) {
-            signInButton.click()
-        }
+        buttonClick("Sign in")
+
         // Sign in画面が表示されるまで待つ
         mDevice.wait(
             Until.hasObject(
@@ -110,18 +101,27 @@ class GooglePlayTest {
         emailOrPhone.text = email
 
         // Press the next button
-        val nextButton: UiObject = mDevice.findObject(
-            UiSelector().text("Next").className("android.widget.Button")
-        )
-        if (nextButton.exists() && nextButton.isEnabled) {
-            nextButton.click()
-        }
+        buttonClick("Next")
 
-        // Wait until welcome is displayed
-        mDevice.wait(
-            Until.hasObject(
-                By.text("Welcome")),
-            LAUNCH_TIMEOUT)
+        waitUntilWelcomeIsDisplayed()
+
+        // password
+        val passwordEditText = mDevice.findObject(
+            UiSelector().className("android.widget.EditText")
+        )
+
+        // いい加減なアドレスだとreCAPTCHAのようなものが表示される
+        passwordEditText.text = password
+
+        // Press the next button on the password input screen
+        buttonClick("Next")
+
+        waitUntilWelcomeIsDisplayed()
+
+        // Terms of Service
+        buttonClick("I agree")
+
+        // The screen continues after this, but sign in is completed up to this point
 
         // screen shot
         val file = File("/sdcard/Pictures/playStoreSignIn.png")
@@ -144,5 +144,21 @@ class GooglePlayTest {
         val pm = ApplicationProvider.getApplicationContext<Context>().packageManager
         val resolveInfo = pm.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY)
         return resolveInfo?.activityInfo?.packageName
+    }
+
+    private fun waitUntilWelcomeIsDisplayed() {
+        mDevice.wait(
+            Until.hasObject(
+                By.text("Welcome")),
+            LAUNCH_TIMEOUT)
+    }
+
+    private fun buttonClick(buttonName: String) {
+        val aButton: UiObject = mDevice.findObject(
+            UiSelector().text(buttonName).className("android.widget.Button")
+        )
+        if (aButton.exists() && aButton.isEnabled) {
+            aButton.click()
+        }
     }
 }
