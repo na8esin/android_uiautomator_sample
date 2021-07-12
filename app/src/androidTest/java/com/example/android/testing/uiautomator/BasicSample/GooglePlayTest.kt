@@ -109,6 +109,20 @@ class GooglePlayTest {
         // いい加減なアドレスだとreCAPTCHAのようなものが表示される
         emailOrPhone.text = email
 
+        // Press the next button
+        val nextButton: UiObject = mDevice.findObject(
+            UiSelector().text("Next").className("android.widget.Button")
+        )
+        if (nextButton.exists() && nextButton.isEnabled) {
+            nextButton.click()
+        }
+
+        // Wait until welcome is displayed
+        mDevice.wait(
+            Until.hasObject(
+                By.text("Welcome")),
+            LAUNCH_TIMEOUT)
+
         // screen shot
         val file = File("/sdcard/Pictures/playStoreSignIn.png")
         mDevice.takeScreenshot(file)
