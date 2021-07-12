@@ -103,7 +103,7 @@ class GooglePlayTest {
 
         // Email入力欄
         val emailOrPhone = mDevice.findObject(
-            UiSelector().className("android.widget.emailOrPhone")
+            UiSelector().className("android.widget.EditText")
         )
 
         // いい加減なアドレスだとreCAPTCHAのようなものが表示される
