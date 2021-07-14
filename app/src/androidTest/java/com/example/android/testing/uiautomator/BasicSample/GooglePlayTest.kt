@@ -124,6 +124,7 @@ class GooglePlayTest {
         // The screen continues after this, but sign in is completed up to this point
 
         // screen shot
+        // 別のアプリが作った同名のファイルがあるとpermission denied
         val file = File("/sdcard/Pictures/playStoreSignIn.png")
         mDevice.takeScreenshot(file)
 
